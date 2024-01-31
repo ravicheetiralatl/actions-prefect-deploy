@@ -24,6 +24,11 @@ jobs:
           prefect-workspace: ${{ secrets.PREFECT_WORKSPACE }}  # TODO: use staging and production workspaces with organisation or enterprise plan.
       - name: Copy Prefect Config
         run: cp ./config/prefect-development.yaml prefect.yaml
+      - name: Find requirements.txt
+        run: |
+          locations=$(find . -type f -name "requirements.txt")
+          echo "$locations" > requirements_locations.txt
+          cat requirements_locations.txt  
       - name: Run Prefect Deploy
         uses: PrefectHQ/actions-prefect-deploy@v3
         with:
