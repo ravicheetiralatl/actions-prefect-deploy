@@ -33,9 +33,9 @@ jobs:
         id: set_requirements_paths
         run: |
             IFS=',' read -r -a paths <<< $(cat requirements_locations.txt)
-            echo "::set-output name=requirements_paths::${paths[*]}"
+            echo "REQUIREMENTS_PATHS=${paths[*]}" >> $GITHUB_ENV
       - name: Run Prefect Deploy
         uses: PrefectHQ/actions-prefect-deploy@v3
         with:
             all-deployments: "true"
-            requirements-file-paths: ${{ steps.set_requirements_paths.outputs.requirements_paths }}
+            requirements-file-paths: ${{ env.REQUIREMENTS_PATHS }}
