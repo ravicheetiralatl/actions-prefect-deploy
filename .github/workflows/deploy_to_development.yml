@@ -29,11 +29,10 @@ jobs:
           locations=$(find . -type f -name "requirements.txt")
           echo "$locations" > requirements_locations.txt
           cat requirements_locations.txt  
-      - name: Set up requirements paths
-        id: set_requirements_paths
-        run: |
-            IFS=',' read -r -a paths <<< $(cat requirements_locations.txt)
-            echo "REQUIREMENTS_PATHS=${paths[*]}" >> $GITHUB_ENV
+          requirements_locations=$(cat requirements_locations.txt | tr '\n' ',')
+          echo $requirements_locations
+          echo "REQUIREMENTS_PATHS=$requirements_locations" >> $GITHUB_ENV
+
       - name: Run Prefect Deploy
         uses: PrefectHQ/actions-prefect-deploy@v3
         with:
